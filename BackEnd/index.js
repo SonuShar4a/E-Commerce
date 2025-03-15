@@ -58,7 +58,7 @@ passport.use(new LocalStrategy(
             }
         } catch (error) {
              done(error);
-             console.log("DSD");
+             console.log("DS");
              
         }
   }));
