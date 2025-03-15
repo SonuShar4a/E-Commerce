@@ -11,11 +11,15 @@ exports.createProduct=async (req,res)=>{
 }
 
 exports.fetchAllProducts=async(req,res)=>{
-     // filter = {"category":["smartphone","laptops"]}
+  // filter = {"category":["smartphone","laptops"]}
   // sort = {_sort:"price",_order="desc"}
   // pagination = {_page:1,_limit=10}
-  let query = Product.find({});
-  let totalProductQuery=Product.find({});
+  let condition={}
+  if(!req.query.admin){
+    condition.deleted={$ne:true}
+  }
+  let query = Product.find(condition);
+  let totalProductQuery=Product.find(condition);
   if (req.query.category) {
     query = query.find({ category:req.query.category});
     totalProductQuery= totalProductQuery.find({ category:req.query.category});
@@ -70,7 +74,6 @@ exports.fetchProductUpdate=async(req,res)=>{
   try {
    const product=await Product.findByIdAndUpdate(id, req.body);
    console.log(product);
-   
    res.status(200).json(product);
  } catch (error) {
    res.status(400).json(error);
